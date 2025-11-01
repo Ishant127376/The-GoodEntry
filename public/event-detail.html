@@ -27,7 +27,7 @@
       {
         _id: "city-park-cleanup",
         title: "City Park Cleanup & Beautification",
-       image: "./city_cleanup.webp",
+       image: "/images/city_cleanup.webp", // <-- IMAGE PATH FIXED
         day: "Saturday",
         time: "9:00 AM - 12:30 PM",
         location: "Ridgeview City Park, Downtown",
@@ -308,12 +308,14 @@
 
       try {
         const res = await fetch(`/api/events/${eventId}`);
-        if (!res.ok) {
-          throw new Error("Event not found");
+        // The server is expected to throw a 404 or 500 on failure now
+        if (!res.ok) { 
+          throw new Error("Event not found or server error.");
         }
         const event = await res.json();
         renderEvent(event);
       } catch (error) {
+        // This catch block now correctly handles failed database requests
         renderStaticEventLanding("We could not load that event from the server. Explore our featured events below.");
       }
     }
